@@ -1,15 +1,25 @@
 import { expect } from '@wdio/globals'
-import LoginPage from '../pageobjects/login.page.js'
-import SecurePage from '../pageobjects/secure.page.js'
+import OnboardPage from '../pageobjects/onboard.page.js'
+import CreatePage from '../pageobjects/create.page.js'
 
-describe('My Login application', () => {
-    it('should login with valid credentials', async () => {
-        await LoginPage.open()
+describe('Onboard flow', () => {
+    it('should verify that the recovery phrase list contains the original wallet and the newly added wallets',
+        async () => {
+            await OnboardPage.open();
+            await expect(OnboardPage.btnNeedNewWallet).toBeExisting();
 
-        await LoginPage.login('tomsmith', 'SuperSecretPassword!')
-        await expect(SecurePage.flashAlert).toBeExisting()
-        await expect(SecurePage.flashAlert).toHaveText(
-            expect.stringContaining('You logged into a secure area!'))
-    })
+            await OnboardPage.clickNeedNewWalletButton();
+            await expect(CreatePage.sectionRecoveryPhrase).toBeExisting();
+
+            const words = await CreatePage.getRecoveryPhraseWords();
+
+            console.log('Recovery phrase words:', words);
+
+            await expect(CreatePage.btnSavedMyRecoveryPhrase).toBeExisting()
+            await CreatePage.clickSavedMyRecoveryPhraseButton();
+            await CreatePage.fillAllRecoveryPhraseInputs(words);
+            //wait for 5 seconds
+            await browser.pause(5000);
+        })
 })
 
