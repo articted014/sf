@@ -4,7 +4,7 @@ export const config: WebdriverIO.Config = {
     // Runner Configuration
     // ====================
     // WebdriverIO supports running e2e tests as well as unit and component tests.
-    baseUrl: 'https://solflare.com/onboard',
+    baseUrl: getBaseUrl(),
     runner: 'local',
     tsConfigPath: './tsconfig.json',
 
@@ -73,7 +73,7 @@ export const config: WebdriverIO.Config = {
     // Define all options that are relevant for the WebdriverIO instance here
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
-    logLevel: 'info',
+    logLevel: 'silent',
     //
     // Set specific log levels per logger
     // loggers:
@@ -308,3 +308,11 @@ export const config: WebdriverIO.Config = {
     // afterAssertion: function(params) {
     // }
 }
+function getBaseUrl(): string | undefined {
+    const baseUrl = process.env.WEB_URL;
+    if (!baseUrl) {
+        throw new Error('Missing WEB_URL environment variable');
+    }
+    return baseUrl;
+}
+

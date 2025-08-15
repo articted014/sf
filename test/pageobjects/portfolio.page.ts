@@ -55,6 +55,7 @@ class PortfolioPage extends Page {
 
     private async getToggle(numberOfItem: number) {
         const recoveryPhraseItem = await $(`[data-index="${numberOfItem - 1}"]`);
+        await recoveryPhraseItem.waitForDisplayed();
         return recoveryPhraseItem.$('button');
     }
 
