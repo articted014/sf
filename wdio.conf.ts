@@ -239,7 +239,7 @@ export const config: WebdriverIO.Config = {
      * @param {boolean} result.passed    true if test has passed, otherwise false
      * @param {object}  result.retries   information about spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
-    afterTest: async function (test, context, { error }) {
+    afterTest: async function (test, { error }) {
         if (error) {
             const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
             const filepath = `./screenshots/${test.title.replace(/ /g, '_')}_${timestamp}.png`;
