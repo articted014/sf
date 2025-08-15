@@ -52,19 +52,38 @@ export const config: WebdriverIO.Config = {
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
     // https://saucelabs.com/platform/platform-configurator
     //
-    // capabilities: [{
-    //     browserName: 'chrome'
-    // }, {
-    //     browserName: 'firefox'
-    // }, {
-    //     browserName: 'safari'
-    // }, {
-    //     browserName: 'MicrosoftEdge'
-    // }],
-    capabilities: [{
-        browserName: process.env.BROWSER || 'chrome',
-        acceptInsecureCerts: true
-    }],
+    capabilities: [
+        (function () {
+            const browser = process.env.BROWSER || 'chrome';
+            const headless = process.env.HEADLESS === 'true';
+            if (browser === 'chrome') {
+                return {
+                    browserName: 'chrome',
+                    'goog:chromeOptions': {
+                        args: [
+                            ...(headless ? ['--headless', '--disable-gpu', '--window-size=1920,1080'] : [])
+                        ]
+                    },
+                    acceptInsecureCerts: true
+                };
+            } else if (browser === 'firefox') {
+                return {
+                    browserName: 'firefox',
+                    'moz:firefoxOptions': {
+                        args: [
+                            ...(headless ? ['-headless'] : [])
+                        ]
+                    },
+                    acceptInsecureCerts: true
+                };
+            } else {
+                return {
+                    browserName: browser,
+                    acceptInsecureCerts: true
+                };
+            }
+        })()
+    ],
 
     //
     // ===================
