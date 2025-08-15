@@ -62,7 +62,7 @@ export const config: WebdriverIO.Config = {
     //     browserName: 'MicrosoftEdge'
     // }],
     capabilities: [{
-        browserName: 'chrome',
+        browserName: process.env.BROWSER || 'chrome',
         acceptInsecureCerts: true
     }],
 

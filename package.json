@@ -10,7 +10,16 @@
     "wdio-wait-for": "^3.1.0"
   },
   "scripts": {
-    "wdio": "wdio run ./wdio.conf.ts"
+    "wdio": "wdio run ./wdio.conf.ts",
+    "wdio:chrome": "BROWSER=chrome wdio run ./wdio.conf.ts",
+    "wdio:firefox": "BROWSER=firefox wdio run ./wdio.conf.ts",
+    "wdio:safari": "BROWSER=safari wdio run ./wdio.conf.ts",
+    "wdio:edge": "BROWSER=MicrosoftEdge wdio run ./wdio.conf.ts",
+    "playwright:test": "npx playwright test",
+    "playwright:test:devnet": "npx playwright test test/api/devnetTokenValidation.spec.ts",
+    "playwright:test:sol": "npx playwright test test/api/solTokenValidation.spec.ts",
+    "playwright:test:switch": "npx playwright test test/api/switchingNetwork.spec.ts",
+    "playwright:test:break": "npx playwright test test/api/breakApi.spec.ts"
   },
   "dependencies": {
     "dotenv": "^17.2.1"

@@ -30,7 +30,7 @@ class PortfolioPage extends Page {
     }
 
     public get walletItems() {
-        return $$('button[data-testid^="li-wallets-"]');
+        return $$('[data-testid="list-item-m-title"]');
     }
 
     public async clickWalletPicker() {
@@ -77,10 +77,24 @@ class PortfolioPage extends Page {
         await toggle.click();
     }
 
+    public async getWalletItems(): Promise<ChainablePromiseArray> {
+        log.info('Waiting for wallet items to be loaded and displayed');
+        await browser.waitUntil(async () => {
+            const items = await this.walletItems;
+            const arr = await Promise.all(items);
+            return arr.length > 0 && (await arr[0].isDisplayed());
+        }, {
+            timeout: 5000,
+            timeoutMsg: 'No wallet items found or not displayed after 5s'
+        });
+        return this.walletItems;
+    }
+
     public async getWalletNames(): Promise<string[]> {
         log.info('Getting wallet names');
         const walletNameElements = await $$('[data-testid="list-item-m-title"]');
         const walletNames: string[] = [];
+
         for (const el of walletNameElements) {
             const textValue = await el.getText();
             // This condition is because the Add wallet button has the same data-testid
@@ -89,16 +103,6 @@ class PortfolioPage extends Page {
                 walletNames.push(textValue);
             }
         }
-
-        log.info('Waiting for wallet names to be populated.');
-        await browser.waitUntil(
-            async () => (await walletNames).length === 3,
-            {
-                timeout: 5000,
-                timeoutMsg: 'Expected 3 wallets to be displayed'
-            }
-        );
-
         log.info('Wallet names:', walletNames);
         return walletNames;
     }

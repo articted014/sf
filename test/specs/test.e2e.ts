@@ -45,7 +45,7 @@ describe('Login and add wallet', () => {
 
             await PortfolioPage.clickSaveButton();
 
-            const walletElements = await PortfolioPage.walletItems;
+            const walletElements = await PortfolioPage.getWalletItems();
             const walletNames = await PortfolioPage.getWalletNames();
 
             // Assert the number of wallets
