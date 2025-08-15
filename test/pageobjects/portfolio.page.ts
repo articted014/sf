@@ -7,7 +7,7 @@ import log from '../utils/logger';
  */
 class PortfolioPage extends Page {
     /**
-     * define selectors using getter methods
+     * getters for selectors
      */
     public get sectionWalletPicker() {
         return $('[data-testid="icon-section-wallet-picker-arrow-right"]');
@@ -59,24 +59,28 @@ class PortfolioPage extends Page {
         return recoveryPhraseItem.$('button');
     }
 
+    // Checks if the toggle is disabled
     public async isToggleDisabled(numberOfItem: number): Promise<boolean> {
         log.info(`Checking if toggle #${numberOfItem} is disabled`);
         const toggle = await this.getToggle(numberOfItem);
         return await toggle.getAttribute('disabled') !== null;
     }
 
+    // Checks if the toggle is ON
     public async isToggleOn(numberOfItem: number): Promise<boolean> {
         log.info(`Checking if toggle #${numberOfItem} is ON`);
         const toggle = await this.getToggle(numberOfItem);
         return await toggle.getAttribute('aria-checked') === 'true';
     }
 
+    // Toggles the state of a toggle located at the specified index
     public async toggleItem(numberOfItem: number) {
         log.info(`Toggling item #${numberOfItem}`);
         const toggle = await this.getToggle(numberOfItem);
         await toggle.click();
     }
 
+    // Gets the wallet items
     public async getWalletItems(): Promise<ChainablePromiseArray> {
         log.info('Waiting for wallet items to be loaded and displayed');
         await browser.waitUntil(async () => {
@@ -90,6 +94,7 @@ class PortfolioPage extends Page {
         return this.walletItems;
     }
 
+    // Gets the wallet names
     public async getWalletNames(): Promise<string[]> {
         log.info('Getting wallet names');
         const walletNameElements = await $$('[data-testid="list-item-m-title"]');
@@ -98,7 +103,7 @@ class PortfolioPage extends Page {
         for (const el of walletNameElements) {
             const textValue = await el.getText();
             // This condition is because the Add wallet button has the same data-testid
-            // Could check its parents, but for this case it is easier workaround
+            // Could check its parents, but for this case, this is easier workaround
             if (textValue !== "Add wallet") {
                 walletNames.push(textValue);
             }

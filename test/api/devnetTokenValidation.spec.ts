@@ -26,29 +26,31 @@ test('Devnet Token Validation', async ({ request }) => {
         },
     });
 
+    // Validate the response status
     expect(response.status()).toBe(200);
 
+    // Parse the response and fetch tokens
     const body = await response.json();
     const tokens = body.tokens;
 
-    // 2. Validate that the response includes multiple tokens, not just SOL.
+    // Validate that the response includes multiple tokens, not just SOL.
     expect(Array.isArray(tokens)).toBe(true);
     expect(tokens.length).toBeGreaterThan(1);
 
-    // 3. Confirm that the response contains tokens with a mint address.
+    // Confirm that the response contains tokens with a mint address.
     tokens.forEach((t: any) => {
         expect(t.mint).toBeDefined();
         expect(typeof t.mint).toBe('string');
         expect(t.mint.length).toBeGreaterThan(0);
     });
 
-    // 4. Ensure totalUiAmount for each token has valid values.
+    // Ensure totalUiAmount for each token has valid values.
     tokens.forEach((t: any) => {
         expect(t.totalUiAmount).not.toBeNull();
         expect(typeof t.totalUiAmount).toBe('number');
     });
 
-    // 5. Validate the type of fields such as price, coingeckoId, and verify if they exist for each token.
+    // Validate the type of fields such as price, coingeckoId, and verify if they exist for each token.
     tokens.forEach((t: any) => {
         // price may be missing or null
         if ('price' in t && t.price !== null && t.price !== undefined) {
@@ -64,7 +66,7 @@ test('Devnet Token Validation', async ({ request }) => {
         }
     });
 
-    // 2. (again) Ensure there are tokens in addition to SOL
+    // Ensure there are tokens in addition to SOL
     const nonSolTokens = tokens.filter((t: any) => t.symbol !== 'SOL');
     expect(nonSolTokens.length).toBeGreaterThan(0);
 });

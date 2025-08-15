@@ -11,6 +11,7 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 test('Break API by sending network=123', async ({ request }) => {
     const address = process.env.ADDRESS;
     const token = process.env.API_TOKEN;
+    // Intentional wrong network parameter in order to get 400 Bad Request
     const network = 123;
     const baseUrl = process.env.API_URL;
     const url = `${baseUrl}/${address}?network=${network}`;

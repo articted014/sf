@@ -14,7 +14,7 @@ export default class Page {
         return browser.url(`/${path}`)
     }
 
-
+    // Waits for an element to be displayed and clicks it
     protected async waitAndClick(element: ChainablePromiseElement) {
         log.info('Waiting for element to be displayed and clicking:', await element.selector);
         await element.waitForDisplayed();
@@ -22,6 +22,7 @@ export default class Page {
         log.info('Clicked element:', await element.selector);
     }
 
+    // Fills the input field for input element with value
     protected async fillInput(input: ChainablePromiseElement, value: string) {
         log.info('Waiting for input to be displayed and setting value:', await input.selector, value);
         await input.waitForDisplayed();

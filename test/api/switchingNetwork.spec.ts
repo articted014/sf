@@ -17,7 +17,7 @@ test('Switching from mainnet to devnet and back restores original response', asy
     const devNetwork = process.env.DEV_NETWORK;
     const mainNetwork = process.env.MAIN_NETWORK;
 
-    // 1. First Request (Main network)
+    // First Request (Main network)
     const mainnetResponse1 = await request.get(`${url}?network=${mainNetwork}`, {
         headers: { Authorization: `Bearer ${token}` }
     });
@@ -26,7 +26,7 @@ test('Switching from mainnet to devnet and back restores original response', asy
     const mainnetTokens1 = mainnetBody1.tokens;
     expect(Array.isArray(mainnetTokens1)).toBe(true);
 
-    // 2. Second Request (Dev network)
+    // Second Request (Dev network)
     const devnetResponse = await request.get(`${url}?network=${devNetwork}`, {
         headers: { Authorization: `Bearer ${token}` }
     });
@@ -38,7 +38,7 @@ test('Switching from mainnet to devnet and back restores original response', asy
     // Validate that additional tokens appear in Dev network response
     expect(devnetTokens.length).toBeGreaterThan(mainnetTokens1.length);
 
-    // 3. Third Request (Back to Main network)
+    // Third Request (Back to Main network)
     const mainnetResponse2 = await request.get(`${url}?network=${mainNetwork}`, {
         headers: { Authorization: `Bearer ${token}` }
     });
@@ -48,7 +48,6 @@ test('Switching from mainnet to devnet and back restores original response', asy
     expect(Array.isArray(mainnetTokens2)).toBe(true);
 
     // Ensure all token balances and details match the original mainnet response (except price)
-    // We'll compare all fields except 'price' and 'solPrice'
     function stripPriceFields(token: any) {
         const { price, solPrice, ...rest } = token;
         return rest;

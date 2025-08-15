@@ -7,7 +7,7 @@ import log from '../utils/logger';
  */
 class OnboardPage extends Page {
     /**
-     * define selectors using getter methods
+     * getter for the "Need New Wallet" button
      */
     public get btnNeedNewWallet() {
         return $('[data-testid="btn-need-new-wallet"]');

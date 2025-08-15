@@ -7,7 +7,7 @@ import log from '../utils/logger';
  */
 class CreatePage extends Page {
     /**
-     * define selectors using getter methods
+     * getters for selectors
      */
     public get sectionRecoveryPhrase() {
         return $('[data-testid="section-mnemonic-field"]');
@@ -71,6 +71,7 @@ class CreatePage extends Page {
         await this.waitAndClick(this.btnContinue);
     }
 
+    // Filling and repeating new password
     public async fillAndRepeatNewPassword(password: string) {
         log.info('Filling and repeating new password');
         await this.fillInput(this.inputNewPassword, password);

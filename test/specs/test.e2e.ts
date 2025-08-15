@@ -5,21 +5,24 @@ import SuccessPage from '../pageobjects/success.page.js'
 import PortfolioPage from '../pageobjects/portfolio.page.js'
 
 describe('Login and add wallet', () => {
-    it('should verify that the recovery phrase list contains the original wallet and the newly added wallets',
+    it('should verify recovery phrase list contains original wallet and newly added wallets',
         async () => {
             const password = 'testpassword';
             const expectedWalletNames = ['Main Wallet', 'Wallet 2', 'Wallet 3'];
 
+            // Navigate and ensure the OnboardPage is displayed
             await OnboardPage.open();
             await expect(OnboardPage.btnNeedNewWallet).toBeExisting();
 
             await OnboardPage.clickNeedNewWalletButton();
             await expect(CreatePage.sectionRecoveryPhrase).toBeExisting();
 
+            // Getting the phrase words without copying
             const words = await CreatePage.getRecoveryPhraseWords();
 
             await expect(CreatePage.btnSavedMyRecoveryPhrase).toBeExisting()
             await CreatePage.clickSavedMyRecoveryPhraseButton();
+            // Filling the phrase words without pasting
             await CreatePage.fillAllRecoveryPhraseInputs(words);
             await CreatePage.clickContinueButton();
             await CreatePage.fillAndRepeatNewPassword(password);
@@ -27,11 +30,15 @@ describe('Login and add wallet', () => {
 
             await expect(SuccessPage.btnAgree).toBeExisting();
             await SuccessPage.clickAgreeButton();
+
+            // Open wallet picker and click add new wallet
             await expect(PortfolioPage.sectionWalletPicker).toBeExisting();
             await PortfolioPage.clickWalletPicker();
             await expect(PortfolioPage.itemMainWallet).toBeExisting();
             await expect(PortfolioPage.btnAddWallet).toBeExisting();
             await PortfolioPage.clickAddWalletButton();
+
+            // Open manage recovery phrase and check the toggles, turn on the toggles 3 and 4
             await expect(PortfolioPage.itemManageRecoveryPhrase).toBeExisting();
             await PortfolioPage.clickItemManageRecoveryPhrase();
             await expect(PortfolioPage.isToggleDisabled(1)).resolves.toBe(true);
@@ -45,6 +52,7 @@ describe('Login and add wallet', () => {
 
             await PortfolioPage.clickSaveButton();
 
+            // Verify original wallet and newly added wallets are displayed
             const walletElements = await PortfolioPage.getWalletItems();
             const walletNames = await PortfolioPage.getWalletNames();
 

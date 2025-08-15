@@ -25,9 +25,9 @@ test('GET portfolio tokens', async ({ request }) => {
     const body = await response.json();
     expect(response.status()).toBe(200);
 
-    const tokens = body.tokens; // This is the array you want
+    const tokens = body.tokens;
 
-    // Now you can use array methods:
+    // Checking SOL token properties values: name, mint, totalUiAmount
     const solToken = tokens.find((t: any) => t.symbol === 'SOL');
     expect(solToken).toBeDefined();
     expect(solToken.name).toBe('Solana');
