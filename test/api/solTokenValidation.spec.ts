@@ -3,6 +3,7 @@ import { test, expect } from '@playwright/test';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
+import log from '../utils/logger';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,6 +16,12 @@ test('GET portfolio tokens', async ({ request }) => {
     const baseUrl = process.env.API_URL;
     const url = `${baseUrl}/${address}`;
 
+    log.info('Check if all env variables are set');
+    if (!address || !token || !baseUrl) {
+        throw new Error('Missing required environment variables!');
+    }
+
+    log.info(`Sending request to ${url}`);
     const response = await request.get(url, {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -22,11 +29,15 @@ test('GET portfolio tokens', async ({ request }) => {
         },
     });
 
+
     const body = await response.json();
+    log.info(`Response status: ${response.status()}`);
+    log.info(`Response body: ${JSON.stringify(body)}`);
     expect(response.status()).toBe(200);
 
     const tokens = body.tokens;
 
+    log.info(`Validating Sol token...`);
     // Checking SOL token properties values: name, mint, totalUiAmount
     const solToken = tokens.find((t: any) => t.symbol === 'SOL');
     expect(solToken).toBeDefined();

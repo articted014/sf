@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
+import log from '../utils/logger';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,6 +18,12 @@ test('Switching from mainnet to devnet and back restores original response', asy
     const devNetwork = process.env.DEV_NETWORK;
     const mainNetwork = process.env.MAIN_NETWORK;
 
+    log.info('Check if all env variables are set');
+    if (!address || !token || !baseUrl || !devNetwork || !mainNetwork) {
+        throw new Error('Missing required environment variables!');
+    }
+
+    log.info(`Sending request to ${url} with network=${mainNetwork}`);
     // First Request (Main network)
     const mainnetResponse1 = await request.get(`${url}?network=${mainNetwork}`, {
         headers: { Authorization: `Bearer ${token}` }
@@ -25,7 +32,10 @@ test('Switching from mainnet to devnet and back restores original response', asy
     const mainnetBody1 = await mainnetResponse1.json();
     const mainnetTokens1 = mainnetBody1.tokens;
     expect(Array.isArray(mainnetTokens1)).toBe(true);
+    log.info(`Response status: ${mainnetResponse1.status()}`);
+    log.info(`Response body: ${JSON.stringify(mainnetBody1)}`);
 
+    log.info(`Sending request to ${url} with network=${devNetwork}`);
     // Second Request (Dev network)
     const devnetResponse = await request.get(`${url}?network=${devNetwork}`, {
         headers: { Authorization: `Bearer ${token}` }
@@ -34,10 +44,13 @@ test('Switching from mainnet to devnet and back restores original response', asy
     const devnetBody = await devnetResponse.json();
     const devnetTokens = devnetBody.tokens;
     expect(Array.isArray(devnetTokens)).toBe(true);
+    log.info(`Response status: ${mainnetResponse1.status()}`);
+    log.info(`Response body: ${JSON.stringify(mainnetBody1)}`);
 
     // Validate that additional tokens appear in Dev network response
     expect(devnetTokens.length).toBeGreaterThan(mainnetTokens1.length);
 
+    log.info(`Sending request to ${url} with network=${mainNetwork}`);
     // Third Request (Back to Main network)
     const mainnetResponse2 = await request.get(`${url}?network=${mainNetwork}`, {
         headers: { Authorization: `Bearer ${token}` }
@@ -46,6 +59,10 @@ test('Switching from mainnet to devnet and back restores original response', asy
     const mainnetBody2 = await mainnetResponse2.json();
     const mainnetTokens2 = mainnetBody2.tokens;
     expect(Array.isArray(mainnetTokens2)).toBe(true);
+    log.info(`Response status: ${mainnetResponse2.status()}`);
+    log.info(`Response body: ${JSON.stringify(mainnetBody2)}`);
+
+    log.info(`Comparing tokens from mainnet responses...`);
 
     // Ensure all token balances and details match the original mainnet response (except price)
     function stripPriceFields(token: any) {
