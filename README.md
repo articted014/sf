@@ -30,9 +30,9 @@ npm install
 - `npm run wdio:firefox` — Run E2E tests in Firefox.
 - `npm run wdio:safari` — Run E2E tests in Safari.
 - `npm run wdio:edge` — Run E2E tests in Microsoft Edge.
-- `npm run wdio:allure` — Run E2E tests, generate Allure HTML report, and open it in your browser.
-- `npm run wdio:allure:report` — Generate the Allure HTML report from the latest test run.
-- `npm run wdio:allure:open` — Open the Allure HTML report in your browser.
+- `npm run allure` — Run E2E tests, generate Allure HTML report, and open it in your browser.
+- `npm run allure:report` — Generate the Allure HTML report from the latest test run.
+- `npm run allure:open` — Open the Allure HTML report in your browser.
 
 ### Playwright (API) Test Scripts
 - `npm run playwright:test` — Run all Playwright API tests.
