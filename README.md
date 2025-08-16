@@ -41,8 +41,6 @@ npm install
 - `npm run playwright:test:switch` — Run only the network switching test.
 - `npm run playwright:test:break` — Run only the break API test.
 - `npm run playwright:test:allure` — Run Playwright tests, generate Allure HTML report, and open it in your browser (if configured).
-- `npm run playwright:allure:report` — Generate the Allure HTML report from Playwright results.
-- `npm run playwright:allure:open` — Open the Playwright Allure HTML report in your browser.
 
 ---
 
