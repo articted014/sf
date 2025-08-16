@@ -62,4 +62,4 @@ npm install
 
 ---
 
-For more details, see the comments.
+For more details, see the comments. If you need further clarification contact me on `articted@gmail.com`.
