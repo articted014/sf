@@ -26,8 +26,8 @@ npm install
 
 ### WebdriverIO (E2E) Test Scripts
 - `npm run wdio` — Run all E2E tests with the default browser (Chrome).
-- `npm run wdio:chrome` — Run E2E tests in Chrome.
-- `npm run wdio:firefox` — Run E2E tests in Firefox.
+- `npm run wdio:chrome` — Run E2E tests in Chrome. To run it in headless mode, make sure `HEADLESS=true` is set in `.env`
+- `npm run wdio:firefox` — Run E2E tests in Firefox. To run it in headless mode, make sure `HEADLESS=true` is set in `.env`
 - `npm run wdio:safari` — Run E2E tests in Safari.
 - `npm run wdio:edge` — Run E2E tests in Microsoft Edge.
 - `npm run allure` — Run E2E tests, generate Allure HTML report, and open it in your browser.
@@ -62,4 +62,4 @@ npm install
 
 ---
 
-For more details, see the comments.
+For more details, see the comments. If you need further clarification contact me on `articted@gmail.com`.
